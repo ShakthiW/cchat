@@ -17,7 +17,18 @@
 
 ---
 
-## 📦 Installation
+## 📦 Installation (By Clone)
+### 🚀 Installation script
+We provide an install.sh script that automatically downloads and installs the correct binary for your OS/architecture from the GitHub release.
+
+Run this command to install:
+```bash
+curl -sSfL https://raw.githubusercontent.com/yourusername/cchat/main/install.sh | bash
+```
+
+---
+
+## 📦 Installation (By Clone)
 
 ### 1. Clone the repo
 
