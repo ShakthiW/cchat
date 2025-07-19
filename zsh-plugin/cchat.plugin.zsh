@@ -17,7 +17,6 @@ fi
 INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
 
-# Construct the tar.gz URL
 TAR_URL="https://github.com/ShakthiW/chatcli/releases/latest/download/cchat-${OS}-${ARCH}.tar.gz"
 
 echo "⬇️  Downloading cchat from $TAR_URL..."
@@ -27,8 +26,8 @@ curl -fsSL "$TAR_URL" -o "$TMP_DIR/cchat.tar.gz"
 echo "📦 Extracting..."
 tar -xzf "$TMP_DIR/cchat.tar.gz" -C "$TMP_DIR"
 
-# Move binary to install dir
-mv "$TMP_DIR/cchat" "$INSTALL_DIR/cchat"
+# Move and rename the extracted binary
+mv "$TMP_DIR/cchat-${OS}-${ARCH}" "$INSTALL_DIR/cchat"
 chmod +x "$INSTALL_DIR/cchat"
 
 # Clean up
@@ -36,13 +35,13 @@ rm -rf "$TMP_DIR"
 
 # Add to PATH if not already
 if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
-  echo "\n# Add cchat to PATH" >> ~/.zshrc
+  printf "\n# Add cchat to PATH\n" >> ~/.zshrc
   echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> ~/.zshrc
 fi
 
 # Add alias for ease of use
 if ! grep -q "alias ai=" ~/.zshrc; then
-  echo "\n# Alias for cchat CLI" >> ~/.zshrc
+  printf "\n# Alias for cchat CLI\nalias ai='cchat chat'\n" >> ~/.zshrc
   echo "alias ai='cchat chat'" >> ~/.zshrc
 fi
 
