@@ -1,12 +1,12 @@
 /*
-Copyright © 2025 SHAKTHI WARNAKULASURIYA <shakthiraveen@gmail.com>
-
+Copyright © 2025 SHAKTHI WARNAKULASURIYA <shakthiraveen2002@gmail.com>
 */
 package cmd
 
 import (
 	"chatcli/config"
 	"chatcli/providers"
+	"chatcli/ui"
 	"fmt"
 	"os"
 	"strings"
@@ -55,30 +55,30 @@ Examples:
 		case "openai":
 			response, err = getOpenAIResponse(message, cfg)
 			if err != nil {
-				fmt.Println("❌ Failed to get OpenAI response:", err)
+				fmt.Println(ui.ErrorStyle.Render(fmt.Sprintf("❌ Failed to get OpenAI response: %v", err)))
 				os.Exit(1)
 			}
 		case "gemini":
 			response, err = getGeminiResponse(message, cfg)
 			if err != nil {
-				fmt.Println("❌ Failed to get Gemini response:", err)
+				fmt.Println(ui.ErrorStyle.Render(fmt.Sprintf("❌ Failed to get Gemini response: %v", err)))
 				os.Exit(1)
 			}
 		case "claude":
-			fmt.Println("❌ Claude is not supported yet")
+			fmt.Println(ui.InfoStyle.Render("❌ Claude is not supported yet"))
 			os.Exit(1)
 		default:
-			fmt.Println("❌ No provider selected. Use --openai, --gemini, or --claude")
+			fmt.Println(ui.ErrorStyle.Render("❌ No provider selected. Use --openai, --gemini, or --claude"))
 			os.Exit(1)
 		}
 
-		fmt.Println(response)
+		fmt.Println(ui.ResponseStyle.Render(response))
 	},
 }
 
 func getOpenAIResponse(message string, cfg *config.Config) (string, error) {
 	if cfg.OpenAIKey == "" {
-		fmt.Println("❌ OpenAI key not set. Use `chat init --openai-key=...`")
+		fmt.Println(ui.ErrorStyle.Render("❌ OpenAI key not set. Use `chat init --openai-key=...`"))
 		os.Exit(1)
 	}
 
@@ -92,7 +92,7 @@ func getOpenAIResponse(message string, cfg *config.Config) (string, error) {
 
 func getGeminiResponse(message string, cfg *config.Config) (string, error) {
 	if cfg.GeminiKey == "" {
-		fmt.Println("❌ Gemini key not set. Use `chat init --gemini-key=...`")
+		fmt.Println(ui.ErrorStyle.Render("❌ Gemini key not set. Use `chat init --gemini-key=...`"))
 		os.Exit(1)
 	}
 

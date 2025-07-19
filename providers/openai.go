@@ -1,6 +1,5 @@
 /*
-Copyright © 2025 SHAKTHI WARNAKULASURIYA <shakthiraveen@gmail.com>
-
+Copyright © 2025 SHAKTHI WARNAKULASURIYA <shakthiraveen2002@gmail.com>
 */
 package providers
 
@@ -37,7 +36,7 @@ func GetOpenAIResponse(message string, apiKey string) (string, error) {
 		Messages: []OpenAIMessage{
 			{
 				Role:    "user",
-				Content: message,
+				Content: fmt.Sprintf(PromptTemplate, message),
 			},
 		},
 	}

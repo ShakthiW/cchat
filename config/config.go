@@ -1,6 +1,5 @@
 /*
-Copyright © 2025 SHAKTHI WARNAKULASURIYA <shakthiraveen@gmail.com>
-
+Copyright © 2025 SHAKTHI WARNAKULASURIYA <shakthiraveen2002@gmail.com>
 */
 package config
 
