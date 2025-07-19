@@ -4,7 +4,9 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"chatcli/config"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -12,15 +14,52 @@ import (
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Configure API keys and default provider for chatcli",
+	Long: `Use this command to set or update your API keys and default LLM provider.
+You can update one or more fields at a time using flags.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Examples:
+  chat init --openai-key=sk-xxx
+  chat init --default-provider=openai
+  chat init --claude-key=abc123 --default-provider=claude`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init called")
+		cfg, err := config.LoadConfig()
+		if err != nil {
+			cfg = &config.Config{}
+		}
+
+		openaiKey, _ := cmd.Flags().GetString("openai-key")
+		geminiKey, _ := cmd.Flags().GetString("gemini-key")
+		claudeKey, _ := cmd.Flags().GetString("claude-key")
+		defaultProvider, _ := cmd.Flags().GetString("default-provider")
+
+		// Set only if provided
+		if openaiKey != "" {
+			cfg.OpenAIKey = openaiKey
+		}
+		if geminiKey != "" {
+			cfg.GeminiKey = geminiKey
+		}
+		if claudeKey != "" {
+			cfg.ClaudeKey = claudeKey
+		}
+		if defaultProvider != "" {
+			defaultProvider = strings.ToLower(defaultProvider)
+			if defaultProvider != "openai" && defaultProvider != "gemini" && defaultProvider != "claude" {
+				fmt.Println("❌ Invalid default provider. Choose from: openai, gemini, claude")
+				return
+			}
+			cfg.DefaultProvider = defaultProvider
+		}
+
+		// save updated config
+		err = config.SaveConfig(cfg.OpenAIKey, cfg.GeminiKey, cfg.ClaudeKey, cfg.DefaultProvider)
+		if err != nil {
+			fmt.Println("❌ Error saving config:", err)
+			return
+		}
+
+		fmt.Println("✅ Config updated successfully")
 	},
 }
 
