@@ -1,80 +1,30 @@
-/*
-Copyright © 2025 SHAKTHI WARNAKULASURIYA <shakthiraveen@gmail.com>
-
-*/
 package providers
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
+    "context"
+    "fmt"
+    "google.golang.org/genai"
 )
 
-const geminiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
-const geminiModel = "gemini-2.0-flash"
-
-type GeminiRequest struct {
-	Model    string          `json:"model"`
-	Messages []GeminiMessage `json:"messages"`
-}
-
-type GeminiMessage struct {
-	Role    string `json:"role"`
-	Content string `json:"content"`
-}
-
-type GeminiResponse struct {
-	Choices []struct {
-		Message GeminiMessage `json:"message"`
-	} `json:"choices"`
-}
-
 func GetGeminiResponse(message string, apiKey string) (string, error) {
-	reqBody := GeminiRequest{
-		Model: geminiModel,
-		Messages: []GeminiMessage{
-			{
-				Role:    "user",
-				Content: message,
-			},
-		},
-	}
+    ctx := context.Background()
+    clientConfig := &genai.ClientConfig{
+        APIKey: apiKey,
+    }
+    client, err := genai.NewClient(ctx, clientConfig)
+    if err != nil {
+        return "", fmt.Errorf("failed to create genai client: %w", err)
+    }
 
-	jsonData, err := json.Marshal(reqBody)
-	if err != nil {
-		return "", fmt.Errorf("failed to marshal request body: %w", err)
-	}
+    result, err := client.Models.GenerateContent(
+        ctx,
+        "gemini-2.5-flash",
+        genai.Text(message),
+        nil,
+    )
+    if err != nil {
+        return "", fmt.Errorf("failed to generate content: %w", err)
+    }
 
-	req, err := http.NewRequest("POST", geminiEndpoint, bytes.NewBuffer(jsonData))
-	if err != nil {
-		return "", fmt.Errorf("failed to create request: %w", err)
-	}
-
-	req.Header.Set("Authorization", "Bearer "+apiKey)
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		return "", fmt.Errorf("failed to send request: %w", err)
-	}
-	defer res.Body.Close()
-
-	if res.StatusCode != http.StatusOK {
-		errorBody, _ := io.ReadAll(res.Body)
-		return "", fmt.Errorf("gemini API error: %s", string(errorBody))
-	}
-
-	var geminiResponse GeminiResponse
-	if err := json.NewDecoder(res.Body).Decode(&geminiResponse); err != nil {
-		return "", fmt.Errorf("failed to decode response: %w", err)
-	}
-
-	if len(geminiResponse.Choices) == 0 {
-		return "", fmt.Errorf("no response from Gemini")
-	}
-
-	return geminiResponse.Choices[0].Message.Content, nil
+    return result.Text(), nil
 }
