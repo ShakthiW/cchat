@@ -1,11 +1,12 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -13,24 +14,33 @@ import (
 // chatCmd represents the chat command
 var chatCmd = &cobra.Command{
 	Use:   "chat",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Chat with an LLM using OpenAI, Gemini, or Claude",
+	Long: `Send a prompt to an LLM from the terminal.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Examples:
+  chat "Tell me a joke"
+  chat --gemini "What's the weather?"
+  chat --claude "Summarize this paragraph..."`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("chat called")
+		if len(args) == 0 {
+			fmt.Println("❌ Please provide a message to send. Example: chat 'Tell me a joke'")
+			os.Exit(1)
+		}
+
+		message := strings.Join(args, " ")
+
+		// TODO: Implement the chat logic
+		fmt.Println(message)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(chatCmd)
 
-	chatCmd.Flags().StringP("openai", "o", "", "Chat with OpenAI")
-	chatCmd.Flags().StringP("gemini", "g", "", "Chat with Gemini")
-	chatCmd.Flags().StringP("claude", "c", "", "Chat with Claude")
+	chatCmd.Flags().BoolP("openai", "o", false, "Chat with OpenAI")
+	chatCmd.Flags().BoolP("gemini", "g", false, "Chat with Gemini")
+	chatCmd.Flags().BoolP("claude", "c", false, "Chat with Claude")
 
 	// Here you will define your flags and configuration settings.
 
