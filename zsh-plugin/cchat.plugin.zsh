@@ -20,13 +20,14 @@ INSTALL_DIR="$HOME/.local/bin"
 mkdir -p "$INSTALL_DIR"
 
 echo "⬇️  Installing cchat for $OS-$ARCH..."
-
 curl -fsSL "$BINARY_URL" -o "$INSTALL_DIR/cchat"
 
 chmod +x "$INSTALL_DIR/cchat"
 
+# Add to PATH if not already
 if ! grep -q "$INSTALL_DIR" <<< "$PATH"; then
-  echo "⚠️  Add $INSTALL_DIR to your PATH if not already present"
+  echo "\n# Add cchat to PATH" >> ~/.zshrc
+  echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> ~/.zshrc
 fi
 
 # Add alias
