@@ -23,7 +23,7 @@ We provide an install.sh script that automatically downloads and installs the co
 
 Run this command to install:
 ```bash
-curl -sSfL https://raw.githubusercontent.com/yourusername/cchat/main/install.sh | bash
+curl -sSfL https://raw.githubusercontent.com/ShakthiW/cchat/main/install.sh | bash
 ```
 
 ---
@@ -33,7 +33,7 @@ curl -sSfL https://raw.githubusercontent.com/yourusername/cchat/main/install.sh 
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/yourusername/cchat.git
+git clone https://github.com/ShakthiW/cchat.git
 cd cchat
 ```
 
@@ -85,4 +85,4 @@ go run main.go
 This project is licensed under the MIT License. See LICENSE for details.
 
 ## 📬 Contact
-Made with ❤️ by [Shakthi Warnakulasuriya](https://github.com/shakthiw)
+Made with ❤️ by [Shakthi Warnakulasuriya](https://github.com/ShakthiW)

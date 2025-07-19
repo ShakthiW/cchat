@@ -2,8 +2,8 @@
 
 set -e
 
-REPO="yourusername/cchat"  # Replace with your GitHub repo
-VERSION="v0.1.0"           # Replace with your release tag
+REPO="ShakthiW/cchat"
+VERSION="v0.1.1"
 APP_NAME="cchat"
 INSTALL_PATH="/usr/local/bin"
 
