@@ -1,52 +1,39 @@
-# Zsh plugin for cchat CLI
-# Automatically downloads the correct binary from GitHub releases and adds it to your PATH
+#!/bin/zsh
 
-# Determine platform and architecture
-get_os_arch() {
-  case "$(uname -s)" in
-    Darwin)
-      OS="darwin"
-      ;;
-    Linux)
-      OS="linux"
-      ;;
-    *)
-      echo "❌ Unsupported OS: $(uname -s)"
-      return 1
-      ;;
-  esac
+set -e
 
-  case "$(uname -m)" in
-    x86_64)
-      ARCH="amd64"
-      ;;
-    arm64|aarch64)
-      ARCH="arm64"
-      ;;
-    *)
-      echo "❌ Unsupported architecture: $(uname -m)"
-      return 1
-      ;;
-  esac
-}
+ARCH=$(uname -m)
+OS=$(uname | tr '[:upper:]' '[:lower:]')
 
-install_cchat() {
-  get_os_arch || return 1
+if [[ "$ARCH" == "arm64" ]]; then
+  ARCH="arm64"
+elif [[ "$ARCH" == "x86_64" ]]; then
+  ARCH="amd64"
+else
+  echo "❌ Unsupported architecture: $ARCH"
+  return 1
+fi
 
-  PLUGIN_DIR="${0:A:h}" # directory of this plugin file
-  BIN_DIR="$PLUGIN_DIR/bin"
-  CCHAT_BIN="$BIN_DIR/cchat"
+BINARY_URL="https://github.com/ShakthiW/chatcli/releases/latest/download/cchat-${OS}-${ARCH}"
+INSTALL_DIR="$HOME/.local/bin"
 
-  if [ ! -f "$CCHAT_BIN" ]; then
-    echo "⬇️  Installing cchat for $OS-$ARCH..."
-    mkdir -p "$BIN_DIR"
-    URL="https://github.com/ShakthiW/chatcli/releases/latest/download/cchat-${OS}-${ARCH}"
-    curl -sSL "$URL" -o "$CCHAT_BIN"
-    chmod +x "$CCHAT_BIN"
-    echo "✅ cchat installed successfully."
-  fi
+mkdir -p "$INSTALL_DIR"
 
-  export PATH="$BIN_DIR:$PATH"
-}
+echo "⬇️  Installing cchat for $OS-$ARCH..."
 
-install_cchat
+curl -fsSL "$BINARY_URL" -o "$INSTALL_DIR/cchat"
+
+chmod +x "$INSTALL_DIR/cchat"
+
+if ! grep -q "$INSTALL_DIR" <<< "$PATH"; then
+  echo "⚠️  Add $INSTALL_DIR to your PATH if not already present"
+fi
+
+# Add alias
+if ! grep -q "alias ai=" ~/.zshrc; then
+  echo "\n# Alias for cchat CLI" >> ~/.zshrc
+  echo "alias ai='cchat chat'" >> ~/.zshrc
+fi
+
+echo "✅ cchat installed successfully!"
+echo "⚙️  Restart your terminal or run 'source ~/.zshrc' to use the 'ai' alias."
