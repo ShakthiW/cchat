@@ -47,3 +47,4 @@ fi
 
 echo "✅ cchat installed successfully!"
 echo "⚙️  Restart your terminal or run 'source ~/.zshrc' to use the 'ai' alias."
+echo "Start with a command like 'cchat init -h'"
