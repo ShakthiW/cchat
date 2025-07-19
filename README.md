@@ -22,9 +22,10 @@
 We provide an install.sh script that automatically downloads and installs the correct binary for your OS/architecture from the GitHub release.
 
 Run this command to install:
-```bash
-curl -sSfL https://raw.githubusercontent.com/ShakthiW/cchat/main/install.sh | bash
+```sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ShakthiW/chatcli/main/zsh-plugin/cchat.plugin.zsh)"
 ```
+> 💡 This will download the correct binary and add the alias `ai` to your `.zshrc`.
 
 ---
 
