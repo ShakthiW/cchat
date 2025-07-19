@@ -53,12 +53,17 @@ cchat init --openai-key=sk-... --gemini-key=... --provider=openai
 
 ### 💬 Chat
 ```bash
-cchat --openai "What's the capital of France?"
-cchat --gemini "Explain quantum entanglement"
-cchat --claude "Write a haiku about the ocean"
+ai --openai "What's the capital of France?" | cchat chat --openai "What's the capital of France?"
+ai --gemini "Explain quantum entanglement" | cchat chat --gemini "Explain quantum entanglement"
+ai --claude "Write a haiku about the ocean" | cchat chat --claude "Write a haiku about the ocean"
 ```
 
 You can skip the flag if you've set a default provider.
+
+```bash
+cchat init --default-provider openai
+cchat chat "What's the capital of France?" | ai "What's the capital of France?"
+```
 
 ## ⚙️ Configuration
 Config is stored at:
