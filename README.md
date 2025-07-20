@@ -17,14 +17,18 @@
 
 ---
 
-## 📦 Installation (By Clone)
+## 📦 Installation (Script - MacOS or ZSH Terminal)
+
 ### 🚀 Installation script
+
 We provide an install.sh script that automatically downloads and installs the correct binary for your OS/architecture from the GitHub release.
 
 Run this command to install:
+
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ShakthiW/chatcli/main/zsh-plugin/cchat.plugin.zsh)"
 ```
+
 > 💡 This will download the correct binary and add the alias `ai` to your `.zshrc`.
 
 ---
@@ -39,12 +43,15 @@ cd cchat
 ```
 
 ### 2. Build the CLI
+
 go build -o cchat
 
 ### 3. Move it to your PATH
+
 mv cchat /usr/local/bin/
 
 ## 🧪 Usage
+
 ### 🔧 Initialize with API keys
 
 ```bash
@@ -52,6 +59,7 @@ cchat init --openai-key=sk-... --gemini-key=... --provider=openai
 ```
 
 ### 💬 Chat
+
 ```bash
 ai --openai "What's the capital of France?" | cchat chat --openai "What's the capital of France?"
 ai --gemini "Explain quantum entanglement" | cchat chat --gemini "Explain quantum entanglement"
@@ -66,6 +74,7 @@ cchat chat "What's the capital of France?" | ai "What's the capital of France?"
 ```
 
 ## ⚙️ Configuration
+
 Config is stored at:
 
 ```bash
@@ -75,6 +84,7 @@ Config is stored at:
 You can manually edit this file or re-run cchat init to update values.
 
 ## 🛠️ Roadmap
+
 - OpenAI & Gemini Support
 - Claude Support
 - Streaming responses
@@ -82,13 +92,21 @@ You can manually edit this file or re-run cchat init to update values.
 - Plugin-based provider system
 
 ## 🧑‍💻 Development
+
 Make sure you have Go installed. Then run the project:
+
 ```bash
 go run main.go
 ```
 
 ## 🪪 License
+
 This project is licensed under the MIT License. See LICENSE for details.
 
 ## 📬 Contact
+
 Made with ❤️ by [Shakthi Warnakulasuriya](https://github.com/ShakthiW)
+
+## Example Usage
+
+![Screenshot](public/ss.png)
