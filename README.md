@@ -44,11 +44,15 @@ cd cchat
 
 ### 2. Build the CLI
 
+```bash
 go build -o cchat
+```
 
 ### 3. Move it to your PATH
 
+```bash
 mv cchat /usr/local/bin/
+```
 
 ## 🧪 Usage
 
